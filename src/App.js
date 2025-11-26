@@ -1,23 +1,43 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { ArticleList, ArticleDetail } from './components/Articles';
+import { mockArticles } from './data/mockData';
 import './App.css';
 
 function App() {
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const handleSelectArticle = (articleId) => {
+    const article = mockArticles.find(a => a.id === articleId);
+    setSelectedArticle(article);
+  };
+
+  const handleBackToList = () => {
+    setSelectedArticle(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="container">
+        <header className="header">
+          <div className="title-container">
+            <h1 className="title">Библиотека научных статей</h1>
+          </div>
+        </header>
+
+        <main>
+          {selectedArticle ? (
+            <ArticleDetail
+              article={selectedArticle}
+              onBack={handleBackToList}
+            />
+          ) : (
+            <ArticleList
+              articles={mockArticles}
+              onSelect={handleSelectArticle}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }
